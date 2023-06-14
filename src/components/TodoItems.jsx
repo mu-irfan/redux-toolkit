@@ -1,29 +1,35 @@
 import { useSelector } from "react-redux";
 import Button from "./Button";
 import { useDispatch } from "react-redux";
-import { removeTodo } from "../redux/store/slices/TodoSlice";
+
+import { useEffect } from "react";
+import getTodos from "../redux/apis/getTodos";
 
 const TodoItems = () => {
   const dispatch = useDispatch();
-  const items = useSelector((state) => {
-    return state.todos.todoList;
+
+  const { todoList, loading } = useSelector((state) => {
+    return state.todos;
   });
 
-  const removeItem = (id) => {
-    dispatch(removeTodo(id));
-  };
+  useEffect(() => {
+    dispatch(getTodos());
+  }, []);
 
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div>
       <ul>
-        {items.map((item, ind) => {
+        {todoList?.map((item) => {
           return (
             <li
-              key={ind}
+              key={item.id}
               style={{ display: "flex", alignItems: "center", gap: "10px" }}
             >
-              <p>{item}</p>
-              <Button onClick={() => removeItem(ind)}>delete</Button>
+              <p>{item.item}</p>
+              <Button onClick={() => {}}>delete</Button>
             </li>
           );
         })}

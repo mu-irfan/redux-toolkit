@@ -2,36 +2,40 @@ import { useState } from "react";
 import Button from "./components/Button";
 import TodoItems from "./components/TodoItems";
 import { useDispatch } from "react-redux";
-import { addTodo, clearAllTodo } from "./redux/store/slices/TodoSlice";
+import createTodo from "./redux/apis/createTodo";
 
 function App() {
   const dispatch = useDispatch();
-  const [item, setItem] = useState("");
+  const [item, setItem] = useState({});
 
-  const addItem = (item) => {
-    dispatch(addTodo(item));
-    setItem("");
+  const handleChange = (e) => {
+    setItem({ ...item, [e.target.name]: e.target.value });
   };
 
-  const removeAll = () => {
-    dispatch(clearAllTodo());
+  const todoSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createTodo(item));
+    setItem({});
   };
 
   return (
     <div>
       <h2>Redux Toolkit</h2>
-      <input
-        type="text"
-        placeholder="enter item name"
-        value={item}
-        onChange={(e) => setItem(e.target.value)}
-        style={{ marginBottom: "10px" }}
-      />
-      <br />
-      <Button onClick={() => addItem(item)}>Add item</Button>
+      <form onSubmit={todoSubmit}>
+        <input
+          type="text"
+          placeholder="enter item name"
+          name="item"
+          onChange={handleChange}
+          style={{ marginBottom: "10px" }}
+        />
+        <br />
+        <Button type="submit" onClick={() => {}}>
+          Add item
+        </Button>
+      </form>
       <hr />
       <TodoItems />
-      <Button onClick={removeAll}>Clear All Items</Button>
     </div>
   );
 }

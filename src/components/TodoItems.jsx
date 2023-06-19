@@ -22,6 +22,7 @@ const TodoItems = () => {
   }
   return (
     <div>
+      <h2 style={{ textAlign: "center" }}>All Items</h2>
       <ul>
         {todoList?.map((item) => {
           return (

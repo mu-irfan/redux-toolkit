@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { useEffect } from "react";
 import getTodos from "../redux/apis/getTodos";
+import deleteTodo from "../redux/apis/deleteTodo";
 
 const TodoItems = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const TodoItems = () => {
 
   useEffect(() => {
     dispatch(getTodos());
-  }, []);
+  }, [dispatch]);
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -26,10 +27,20 @@ const TodoItems = () => {
           return (
             <li
               key={item.id}
-              style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                gap: "10px",
+              }}
             >
-              <p>{item.item}</p>
-              <Button onClick={() => {}}>delete</Button>
+              <p style={{ textAlign: "left" }}>{item.item}</p>
+              <div>
+                <Button onClick={() => {}}>view</Button>
+                <Button onClick={() => dispatch(deleteTodo(item.id))}>
+                  delete
+                </Button>
+              </div>
             </li>
           );
         })}
